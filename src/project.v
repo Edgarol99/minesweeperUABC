@@ -86,7 +86,7 @@ module tt_um_minesweeperUABC (
       .l(inp_l),
       .r(inp_r)
   );
-
+/*
   //Bandera
   localparam [7:0] LEFT_GLYPH[0:7] = '{
       8'b00001000,
@@ -175,7 +175,7 @@ localparam [7:0] RIGHT_GLYPH[0:7] = '{
       8'b00011100,
       8'b00001000,
       8'b00000000
-  };
+  };*/
 
   wire [3:0] pos_x = pix_x/40;
   wire [3:0] pos_y = pix_y/40;

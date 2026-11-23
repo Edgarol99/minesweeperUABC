@@ -22,9 +22,9 @@ module tt_um_minesweeperUABC (
     // VGA signals
     wire hsync;
     wire vsync;
-    reg [1:0] R;
-    reg [1:0] G;
-    reg [1:0] B;
+    wire [1:0] R;
+    wire [1:0] G;
+    wire [1:0] B;
     wire video_active;
     wire [9:0] pix_x;
     wire [9:0] pix_y;

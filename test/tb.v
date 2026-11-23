@@ -5,12 +5,17 @@
    that can be driven / tested by the cocotb test.py.
 */
 module tb ();
-
+  always begin
+      #1; clk=~clk;
+  end
   // Dump the signals to a FST file. You can view it with gtkwave or surfer.
   initial begin
-    $dumpfile("tb.fst");
+    $dumpfile("tb.vcd");
     $dumpvars(0, tb);
-    #1;
+    rst_n = 1'b0;
+    clk = 1;
+    ui_in = 20;
+    #50 $finish;
   end
 
   // Wire up the inputs and outputs:

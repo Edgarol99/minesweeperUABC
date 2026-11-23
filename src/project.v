@@ -5,6 +5,7 @@
 
 `default_nettype none
 
+
 module tt_um_minesweeperUABC (
     input  wire [7:0] ui_in,    // Dedicated inputs
     output wire [7:0] uo_out,   // Dedicated outputs
@@ -23,51 +24,6 @@ module tt_um_minesweeperUABC (
   // Suppress unused signals warning
   wire _unused_ok = &{ena, ui_in[7], ui_in[4:0], uio_in};
 
-  // VGA signals
-  wire hsync;
-  wire vsync;
-  reg [1:0] R;
-  reg [1:0] G;
-  reg [1:0] B;
-  wire video_active;
-  wire [9:0] pix_x;
-  wire [9:0] pix_y;
-
-  // Tiny VGA Pmod
-  assign uo_out = {hsync, B[0], G[0], R[0], vsync, B[1], G[1], R[1]};
-
-  hvsync_generator vga_sync_gen (
-      .clk(clk),
-      .reset(~rst_n),
-      .hsync(hsync),
-      .vsync(vsync),
-      .display_on(video_active),
-      .hpos(pix_x),
-      .vpos(pix_y)
-  );
-
-  // Colors
-  localparam [5:0] BLACK = {2'b00, 2'b00, 2'b00};
-  localparam [5:0] GRIS1 = {2'b01, 2'b01, 2'b01};
-  localparam [5:0] GRIS2 = {2'b10, 2'b10, 2'b10};
-  localparam [5:0] RED = {2'b11, 2'b00, 2'b00};
-
-  // RGB output logic
-  always @(posedge clk) begin
-    if (~rst_n) begin
-      R <= 0;
-      G <= 0;
-      B <= 0;
-    end else begin
-      if (video_active) begin
-        if (pos_x==player_x & pos_y==player_y)
-         {R, G, B} <= RED;
-        else
-         {R, G, B} <= pos_x+pos_y;
-      end else
-        {R,G,B} <= BLACK;
-    end
-  end
 
     // Gamepad Pmod
   wire inp_b, inp_y, inp_select, inp_start, inp_up, inp_down, inp_left, inp_right, inp_a, inp_x, inp_l, inp_r;
@@ -219,5 +175,76 @@ localparam [7:0] RIGHT_GLYPH[0:7] = '{
       player_x <= player_x+1;
     end
   end
-  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // VGA signals
+  wire hsync;
+  wire vsync;
+  reg [1:0] R;
+  reg [1:0] G;
+  reg [1:0] B;
+  wire video_active;
+  wire [9:0] pix_x;
+  wire [9:0] pix_y;
+
+  // Tiny VGA Pmod
+  assign uo_out = {hsync, B[0], G[0], R[0], vsync, B[1], G[1], R[1]};
+
+  hvsync_generator vga_sync_gen (
+      .clk(clk),
+      .reset(~rst_n),
+      .hsync(hsync),
+      .vsync(vsync),
+      .display_on(video_active),
+      .hpos(pix_x),
+      .vpos(pix_y)
+  );
+
+  // Colors
+  localparam [5:0] BLACK = {2'b00, 2'b00, 2'b00};
+  localparam [5:0] GRIS1 = {2'b01, 2'b01, 2'b01};
+  localparam [5:0] GRIS2 = {2'b10, 2'b10, 2'b10};
+  localparam [5:0] RED = {2'b11, 2'b00, 2'b00};
+
+  wire [63:0] mines;
+  wire [63:0] zeros;
+  wire [255:0] counts;
+  map minefield();
+
+  wire [5:0] color;
+  map_render field(pos_x,pos_y,0,mines,counts,player_x,player_y,color);
+
+//  map_render crap(pos_x,pos_y,0,mines,counts,player_x,player_y,color);
+
+  // RGB output logic
+  always @(posedge clk) begin
+    if (~rst_n) begin
+      R <= 0;
+      G <= 0;
+      B <= 0;
+    end else begin
+      if (video_active) begin
+        {R,G,B} <= color;
+        /*
+        if (pos_x==player_x & pos_y==player_y)
+         {R, G, B} <= RED;
+        else
+         {R, G, B} <= pos_x+pos_y;*/
+      end else
+        {R,G,B} <= BLACK;
+    end
+  end
+
 endmodule

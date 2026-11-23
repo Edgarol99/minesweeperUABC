@@ -25,7 +25,7 @@ module map (
                     nx = x+dx;
                     ny = y+dy;
                     if ((dx != 0 || dy != 0) && nx >= 0 && nx < 8 && ny >= 0 && ny < 8)
-                        if (MINES[ny*W+nx])
+                        if (MINES[ny*8+nx])
                             c = c + 1;
                 end
             adj = c;

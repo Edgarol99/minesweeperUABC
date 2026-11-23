@@ -57,6 +57,6 @@ module gamepad (
     assign down = ctrl_down | push_down;
     assign left = ctrl_left | push_left;
     assign right = ctrl_right | push_right;
-    assign btn = ctrl_btn | push_btn;
+    assign btn = ctrl_btn | push_action;
 
 endmodule

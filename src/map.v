@@ -23,9 +23,7 @@ module map #(
     output wire [4*W*W-1:0] counts       // 4-bit adjacent-mine count per cell
 );
     localparam N         = W * W;
-    localparam MIN_MINES = 3;            // target = 3 + (0..7) = 3..10
 
-    // For Safe ZONE (first click)
     localparam [N-1:0] COL_FIRST = {W{ {{(W-1){1'b0}}, 1'b1} }};   // x = 0 in every row
     localparam [N-1:0] COL_LAST  = COL_FIRST << (W-1);              // x = W-1 in every row
 
@@ -55,18 +53,15 @@ module map #(
         else        lfsr <= lfsr_step(lfsr);
     end
 
+    // mine placement: one random position per clock, rejected if it is off the
+    // board, already a mine, or inside the safe zone around the first click.
+    // Rejected tries cost a clock but never count, so the total is exact.
     reg [N-1:0] mines_reg;
     reg [3:0]   mines_count;
     reg [3:0]   mines_target;
     reg         making;
 
     wire [4:0]  rand_pos = lfsr[4:0];
-
-    wire [N-1:0] safe = grow(revealed);
-    wire [31:0]  mines_ext = {{(32-N){1'b0}}, mines_reg};   // padded so rand_pos can't index out of range
-    wire [31:0]  safe_ext  = {{(32-N){1'b0}}, safe};
-
-    wire pos_ok = (rand_pos < N) && !mines_ext[rand_pos] && !safe_ext[rand_pos];
 
     always @(posedge clk) begin
         if (!rst_n) begin
@@ -77,9 +72,9 @@ module map #(
         end else if (btn && !(|revealed)) begin             // first click: start a new map
             mines_reg    <= {N{1'b0}};
             mines_count  <= 4'd0;
-            mines_target <= MIN_MINES + lfsr[10:8];
+            mines_target <= lfsr[10:8];
             making       <= 1'b1;
-        end else if (making && pos_ok) begin
+        end else if (making) begin
             mines_reg[rand_pos] <= 1'b1;
             mines_count         <= mines_count + 4'd1;
             if (mines_count + 4'd1 == mines_target)
@@ -88,6 +83,7 @@ module map #(
     end
 
     assign mines = mines_reg;
+
     assign zeros = ~grow(mines_reg) & {N{~making}};
 
     // adjacent-mine count for every cell

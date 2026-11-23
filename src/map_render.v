@@ -28,8 +28,8 @@ always @(*) begin
         color = GRIS1;
     else if (mines[index])
         color = BLACK;
-//    else
-  //      color = 0;
+   else
+       color = GRIS2;
 end 
 
 endmodule

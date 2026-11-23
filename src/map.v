@@ -1,7 +1,15 @@
 `default_nettype none
 
+// ---------------------------------------------------------------------------
+// map : random W x W mine map (W <= 5), 3..10 mines, driven by a 16-bit LFSR.
+//
 // A map is generated when `btn` is pressed while nothing is revealed (i.e. the
-// first click of a game).
+// first click of a game). The clicked cell shows up in `revealed` one clock
+// later, and generation never puts a mine in that cell or its 8 neighbours, so
+// the first click is always a zero and opens an area.
+//
+// While generating (a few dozen clocks), `zeros` is forced to 0 so the flood
+// fill doesn't spread over a half-built map.
 // ---------------------------------------------------------------------------
 module map #(
     parameter W = 5                      // positions come from a 5-bit value, so W <= 5
@@ -46,7 +54,7 @@ module map #(
     end
 
     // mine placement: one random position per clock, rejected if it is off the
-    // board or there is already a mine
+    // board, already a mine, or inside the safe zone around the first click.
     // Rejected tries cost a clock but never count, so the total is exact.
     reg [N-1:0] mines_reg;
     reg [3:0]   mines_count;

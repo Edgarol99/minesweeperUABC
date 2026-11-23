@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------------
-// player.v : the selected cell. Wraps around the edges.
+// cursor.v : the selected cell. Wraps around the edges.
 // ---------------------------------------------------------------------------
 `default_nettype none
 

@@ -50,12 +50,9 @@ module tt_um_minesweeperUABC (
         .vpos(pix_y)    
     );
 
-    wire ms_clk;
-    clk_1ms u1(clk,rst_n,ms_clk);
-
     // Input
     wire up,down,left,right,btn;
-    gamepad control(clk,ms_clk,rst_n,ui_in,up,down,left,right,btn);
+    gamepad control(clk,rst_n,ui_in,up,down,left,right,btn);
 
     wire [2:0] player_x, player_y;
     player #(.W(W)) square (
@@ -98,6 +95,6 @@ module tt_um_minesweeperUABC (
     assign uio_oe  = 0;
 
     // Suppress unused signals warning
-    wire _unused_ok = &{ena, uio_in};
+    wire _unused_ok = &{ena, ui_in[7], ui_in[4:0], uio_in};
 
 endmodule

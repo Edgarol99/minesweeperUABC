@@ -13,10 +13,11 @@ It a minesweeper game, it has a pmdo controller driver, a VGA driver, and uses c
 
 ## How to test
 
-It follows standard minesweeper logic, there are "mines" hidden in the light gray block, press A to reveal the block, and if it is a mine you lose, if there is a mine adjacent the cell will take a different color.
+It follows standard minesweeper logic, there are "mines" hidden in the light gray block, press A to reveal the block, and if it is a mine you lose.
 
 Controls:
 A = Reveal
+X = Flag (tap in a flag to remove)
 UP/DOWN/LEFT/RIGHT = Move the player position
 
 ## External hardware

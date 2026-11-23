@@ -184,11 +184,11 @@ localparam [7:0] RIGHT_GLYPH[0:7] = '{
       8'b00000000
   };*/
 
-  wire [3:0] pos_x = pix_x/40;
-  wire [3:0] pos_y = pix_y/40;
+  wire [2:0] pos_x = pix_x/80;
+  wire [2:0] pos_y = pix_y/60;
 
-  reg [3:0] player_x=0;
-  reg [3:0] player_y=0;
+  reg [2:0] player_x=0;
+  reg [2:0] player_y=0;
 
   wire arriba;
   pulse arriba_pulso (clk,inp_up,arriba);
@@ -201,15 +201,15 @@ localparam [7:0] RIGHT_GLYPH[0:7] = '{
 
   always @(posedge clk) begin
     if (abajo) begin
-      if (player_y==11)
-        player_y <= 0;
-      else
+      // if (player_y==11)
+        // player_y <= 0;
+      // else
         player_y <= player_y+1;
     end
     if (arriba) begin
-      if (player_y==00)
-        player_y <= 11;
-      else
+      // if (player_y==00)
+        // player_y <= 11;
+      // else
         player_y <= player_y-1;
     end
     if (izquierda) begin

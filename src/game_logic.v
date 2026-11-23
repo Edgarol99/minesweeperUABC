@@ -49,7 +49,7 @@ module game_logic #(
     wire [N-1:0] pick = can_reveal ? ({{(N-1){1'b0}}, 1'b1} << idx) : {N{1'b0}};
 
     always @(posedge clk) begin
-        if (!rst_n)
+        if (!rst_n | ((won|lost) & reveal))
             revealed <= {N{1'b0}};
         else
             revealed <= revealed | spread | pick;

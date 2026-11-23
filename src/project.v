@@ -17,7 +17,15 @@ module tt_um_minesweeperUABC (
     // ---- constants ----
     wire [N-1:0]   mines, zeros;
     wire [4*N-1:0] counts;
-    map #(.W(W)) minefield (.mines(mines), .zeros(zeros), .counts(counts));
+    map #(.W(W)) minefield (
+        .clk(clk), 
+        .rst_n(rst_n), 
+        .btn(btn), 
+        .revealed(revealed), 
+        .mines(mines), 
+        .zeros(zeros), 
+        .counts(counts)
+    );
 
     // VGA signals
     wire hsync;

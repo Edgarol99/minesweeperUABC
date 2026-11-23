@@ -3,8 +3,10 @@ module game_logic(
     input  wire clk,
     input  wire rst_n,
     input [63:0] mines,
-    input btn,
-    output reg [63:0] revealed_cells
+    input btn,up,down,left,right,
+    output reg [63:0] revealed_cells,
+    output reg [2:0] player_x,
+    output reg [2:0] player_y
 );
 
     //STATES
@@ -19,7 +21,7 @@ module game_logic(
     always @ (posedge clk or negedge rst_n)
         begin: STATE_MEMORY
         if (!rst_n)
-            current_state <= START;
+            current_state <= PLAY;
         else
             current_state<=next_state;
         end
@@ -28,14 +30,24 @@ module game_logic(
      begin: NEXT_STATE_LOGIC_AND_OUTPUT_LOGIC
         case (current_state)
             START : begin
+                        player_x<=0;
+                        player_y<=0;
                         revealed_cells = 64'b0;
                         if (btn) begin
                             next_state <= PLAY;
                         end
                     end
             PLAY :  begin
+                            if (down)
+                              player_y <= player_y+1;
+                            if (up)
+                              player_y <= player_y-1;
+                            if (left)
+                              player_x <= player_x-1;
+                            if (right)
+                              player_x <= player_x+1;
                         if (btn) begin
-                            if (btn && !revealed_cells[player_id]) begin
+                            if (!revealed_cells[player_id]) begin
                                 revealed_cells[player_id] <= 1;
                                 if (mines[player_id])
                                     next_state <= GAMEOVER;
@@ -50,6 +62,6 @@ module game_logic(
          endcase
      end
 
-    wire [7:0] player_id = {cursor_y, cursor_x};
+    wire [7:0] player_id = {player_y, player_x};
 
 endmodule

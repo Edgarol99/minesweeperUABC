@@ -11,7 +11,7 @@ module map_render (
     output reg [5:0] color
 );
 
-wire [5:0] index = hpos+vpos*8;
+wire [5:0] index = {vpos,hpos};
 wire [3:0] num = count[index*4+:4];
 wire player = (hpos == player_x) && (vpos == player_y);
 

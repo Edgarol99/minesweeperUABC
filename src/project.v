@@ -143,8 +143,6 @@ localparam [7:0] RIGHT_GLYPH[0:7] = '{
   wire [2:0] pos_x = pix_x/80;
   wire [2:0] pos_y = pix_y/60;
 
-  reg [2:0] player_x=0;
-  reg [2:0] player_y=0;
 
   wire arriba;
   pulse arriba_pulso (clk,inp_up,arriba);
@@ -154,36 +152,8 @@ localparam [7:0] RIGHT_GLYPH[0:7] = '{
   pulse izquierda_pulso (clk,inp_left,izquierda);
   wire derecha;
   pulse derecha_pulso (clk,inp_right,derecha);
-
-  always @(posedge clk) begin
-    if (abajo) begin
-      // if (player_y==11)
-        // player_y <= 0;
-      // else
-        player_y <= player_y+1;
-    end
-    if (arriba) begin
-      // if (player_y==00)
-        // player_y <= 11;
-      // else
-        player_y <= player_y-1;
-    end
-    if (izquierda) begin
-      player_x <= player_x-1;
-    end
-    if (derecha) begin
-      player_x <= player_x+1;
-    end
-  end
-
-
-
-
-
-
-
-
-
+  wire btn;
+  pulse btn_pulso (clk,inp_a,btn);
 
 
 
@@ -220,11 +190,12 @@ localparam [7:0] RIGHT_GLYPH[0:7] = '{
 
   wire [63:0] mines;
   wire [63:0] zeros;
+  wire [63:0] revealed;
   wire [255:0] counts;
-  map minefield();
+  map minefield(mines,zeros,counts);
 
   wire [5:0] color;
-  map_render field(pos_x,pos_y,0,mines,counts,player_x,player_y,color);
+  map_render field(pos_x,pos_y,revealed,mines,counts,player_x,player_y,color);
 
 //  map_render crap(pos_x,pos_y,0,mines,counts,player_x,player_y,color);
 
@@ -246,5 +217,10 @@ localparam [7:0] RIGHT_GLYPH[0:7] = '{
         {R,G,B} <= BLACK;
     end
   end
+
+  wire [3:0] player_x;
+  wire [3:0] player_y;
+
+  game_logic cra(clk,rst_n,mines,btn,arriba,abajo,izquierda,derecha,revealed,player_x,player_y);
 
 endmodule

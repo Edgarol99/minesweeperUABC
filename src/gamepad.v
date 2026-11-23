@@ -1,6 +1,7 @@
 
 module gamepad (
     input wire clk,
+    input wire clk_slow,
     input wire rst_n,
     input wire [7:0] ui_in,
     output wire up,
@@ -42,10 +43,20 @@ module gamepad (
     pulse pad_right(clk,rst_n,inp_right,ctrl_right);
     pulse pad_btn(clk,rst_n,inp_a,ctrl_btn);
 
-    assign up = ctrl_up;
-    assign down = ctrl_down;
-    assign left = ctrl_left;
-    assign right = ctrl_right;
-    assign btn = ctrl_btn;
+    wire clk_1ms;
+    clk_1ms btn_clk(clk,rst_n,clk_1ms);
+
+    wire push_up,push_down,push_left,push_right,push_action;
+    push_btn u1(clk,clk_slow,rst_n,ui_in[0],push_up);
+    push_btn u2(clk,clk_slow,rst_n,ui_in[1],push_down);
+    push_btn u3(clk,clk_slow,rst_n,ui_in[2],push_left);
+    push_btn u4(clk,clk_slow,rst_n,ui_in[3],push_right);
+    push_btn u5(clk,clk_slow,rst_n,ui_in[7],push_action);
+
+    assign up = ctrl_up | push_up;
+    assign down = ctrl_down | push_down;
+    assign left = ctrl_left | push_left;
+    assign right = ctrl_right | push_right;
+    assign btn = ctrl_btn | push_btn;
 
 endmodule

@@ -11,7 +11,7 @@ module tt_um_minesweeperUABC (
     input  wire       clk,
     input  wire       rst_n
 );
-    localparam W = 4;
+    localparam W = 5;
     localparam N = W * W;
 
     // ---- constants ----

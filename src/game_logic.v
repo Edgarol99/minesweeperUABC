@@ -44,7 +44,7 @@ module game_logic #(
         end
     endgenerate
 
-    wire [5:0]   idx  = player_y * W + player_x;
+    wire [4:0]   idx  = player_y * W + player_x;
     wire         can_reveal = reveal && !lost && !won;
     wire [N-1:0] pick = can_reveal ? ({{(N-1){1'b0}}, 1'b1} << idx) : {N{1'b0}};
 

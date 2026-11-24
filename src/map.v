@@ -27,7 +27,7 @@ module map #(
         end
     endfunction
 
-    reg [15:0] lfsr;
+    reg [10:0] lfsr;
 
 /*
     function [15:0] lfsr_step(input [15:0] s);
@@ -42,8 +42,8 @@ module map #(
     endfunction
 */
     always @(posedge clk) begin
-        if (!rst_n) lfsr <= 16'hACE1;    // never 0
-        else        lfsr <= {lfsr[14:0], lfsr[15] ^ lfsr[14] ^ lfsr[12] ^ lfsr[3]};
+        if (!rst_n) lfsr <= 11'hAEC;    // never 0
+        else        lfsr <= {lfsr[9:0], lfsr[10] ^ lfsr[7] ^ lfsr[3]};
     end
 
     // mine placement: one random position per clock, rejected if it is off the
@@ -65,7 +65,7 @@ module map #(
         end else if (btn && !(|revealed)) begin             // first click: start a new map
             mines_reg    <= {N{1'b0}};
             mines_count  <= 4'd0;
-            mines_target <= lfsr[10:8];
+            mines_target <= 2+lfsr[10:8];
             making       <= 1'b1;
         end else if (making) begin
             mines_reg[rand_pos] <= 1'b1;

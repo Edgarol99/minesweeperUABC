@@ -3,16 +3,16 @@ module pulse (
     input wire clk,
     input wire rst_n,
     input wire btn,   
-    output reg press 
+    output wire press 
 );
 
     reg last;
     always @(posedge clk) begin
         if (~rst_n)
-            press <= 1'b0;
+            last <= 1'b0;
         else 
-            press <= btn && ~last;
         last <= btn;
     end
+    assign press = btn && ~last;
 
 endmodule

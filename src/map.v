@@ -43,7 +43,7 @@ module map #(
 */
     always @(posedge clk) begin
         if (!rst_n) lfsr <= 11'hAEC;    // never 0
-        else        lfsr <= {lfsr[9:0], lfsr[10] ^ lfsr[7] ^ lfsr[3]};
+        else        lfsr <= {lfsr[9:0], lfsr[10] ^ lfsr[8]};
     end
 
     // mine placement: one random position per clock, rejected if it is off the
@@ -79,6 +79,24 @@ module map #(
 
     assign zeros = ~grow(mines_reg) & {N{~making}};
 
+    wire [N-1:0]   mL = (mines_reg << 1) & ~COL_FIRST;   // mine on my left
+    wire [N-1:0]   mR = (mines_reg >> 1) & ~COL_LAST;    // mine on my right
+    wire [2*N-1:0] hs;                                   // left + self + right, per cell (0..3)
+    genvar i;
+    generate
+        for (i = 0; i < N; i = i + 1) begin : hsum
+            assign hs[2*i +: 2] = mL[i] + mines_reg[i] + mR[i];
+        end
+    endgenerate
+
+    wire [2*N-1:0] hs_up = hs << (2*W);                  // row above's sum
+    wire [2*N-1:0] hs_dn = hs >> (2*W);                  // row below's sum
+
+    generate
+        for (i = 0; i < N; i = i + 1) begin : cnt
+            assign counts[4*i +: 4] = hs_up[2*i +: 2] + hs_dn[2*i +: 2] + mL[i] + mR[i];
+        end
+    endgenerate/*
     // adjacent-mine count for every cell
     genvar x, y, dx, dy;
     generate
@@ -99,5 +117,5 @@ module map #(
                                                 + nb[5] + nb[6] + nb[7] + nb[8];
             end
         end
-    endgenerate
+    endgenerate*/
 endmodule

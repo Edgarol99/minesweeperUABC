@@ -144,7 +144,8 @@ module gamepad_pmod_decoder (
 );
 
   // When the controller is not connected, the data register will be all 1's
-  wire reg_empty = (data_reg == 12'hfff);
+  // was: wire reg_empty = (data_reg == 12'hfff);
+  wire reg_empty = &data_reg[7:3];     // only up, down, left, right and a
   assign is_present = reg_empty ? 0 : 1'b1;
   assign {b, y, select, start, up, down, left, right, a, x, l, r} = reg_empty ? 0 : data_reg;
 

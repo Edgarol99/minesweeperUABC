@@ -66,10 +66,10 @@ module render #(
                 4'd1:    rgb = 6'b00_01_11; //blue
                 4'd2:    rgb = 6'b00_11_00; //green
                 4'd3:    rgb = 6'b11_00_00; //red
-                4'd4:    rgb = 6'b01_00_11; //purple
-                4'd5:    rgb = 6'b01_11_11; //cyan
-                4'd6:    rgb = 6'b11_11_01; //yellow
-                4'd7:    rgb = 6'b11_10_00; //orange
+                // 4'd4:    rgb = 6'b01_00_11; //purple
+                // 4'd5:    rgb = 6'b01_11_11; //cyan
+                // 4'd6:    rgb = 6'b11_11_01; //yellow
+                // 4'd7:    rgb = 6'b11_10_00; //orange
                 default: rgb = 6'b11_10_01; //dark blue
             endcase
         end

@@ -54,6 +54,7 @@ module tb ();
     rst_n = 1'b0;
     clk = 1;
     ui_in = 20;
+    uio_in = 30;
     #50 $finish;
   end
 

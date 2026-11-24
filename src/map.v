@@ -29,20 +29,21 @@ module map #(
 
     reg [15:0] lfsr;
 
+/*
     function [15:0] lfsr_step(input [15:0] s);
         integer k;
         reg [15:0] t;
         begin
             t = s;
-            for (k = 0; k < 7; k = k + 1)
+            for (k = 0; k < 3; k = k + 1)
                 t = {t[14:0], t[15] ^ t[14] ^ t[12] ^ t[3]};
             lfsr_step = t;
         end
     endfunction
-
+*/
     always @(posedge clk) begin
         if (!rst_n) lfsr <= 16'hACE1;    // never 0
-        else        lfsr <= lfsr_step(lfsr);
+        else        lfsr <= {lfsr[14:0], lfsr[15] ^ lfsr[14] ^ lfsr[12] ^ lfsr[3]};
     end
 
     // mine placement: one random position per clock, rejected if it is off the

@@ -95,6 +95,6 @@ module tt_um_minesweeperUABC (
     assign uio_oe  = 0;
 
     // Suppress unused signals warning
-    wire _unused_ok = &{ena, ui_in[7], ui_in[4:0], uio_in};
+    wire _unused_ok = &{ena, ui_in[7], ui_in[3:0], uio_in};
 
 endmodule

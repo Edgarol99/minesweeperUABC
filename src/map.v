@@ -65,7 +65,7 @@ module map #(
         end else if (btn && !(|revealed)) begin             // first click: start a new map
             mines_reg    <= {N{1'b0}};
             mines_count  <= 4'd0;
-            mines_target <= 2+lfsr[10:8];
+            mines_target <= lfsr[10:8];
             making       <= 1'b1;
         end else if (making) begin
             mines_reg[rand_pos] <= 1'b1;

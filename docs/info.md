@@ -9,7 +9,7 @@ You can also include images in this folder and reference them in the markdown. E
 
 ## How it works
 
-It a minesweeper game, it has a pmdo controller driver, a VGA driver, and uses counter to know the position of the player (a red box)
+It a minesweeper game, it has a pmdo controller driver, a VGA driver, and uses counter to know the position of the player (highlighted cell)
 
 ## How to test
 
@@ -23,4 +23,5 @@ UP/DOWN/LEFT/RIGHT = Move the player position
 
 PMOD Controller
 VGA cable
+Buzzer
 Monitor/screen compatible with VGA

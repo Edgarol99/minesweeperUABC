@@ -39,10 +39,10 @@ module render #(
     wire       is_mine = valid ? mines[idx]            : 1'b0;
     wire [3:0] count   = valid ? counts[idx*4 +: 4]    : 4'd0;
     wire       rev     = valid ? revealed[idx]         : 1'b0;
-    wire       show    = rev || (lost && is_mine);
+    wire       show    = rev || lost;
 
     wire is_player    = (col == player_x) && (row == player_y);
-    wire thin_border  = (px < 2) || (px >= 62) || (py < 2) || (py >= 62);
+ //   wire thin_border  = (px < 2) || (px >= 62) || (py < 2) || (py >= 62);
     wire thick_border = (px < 4) || (px >= 60) || (py < 4) || (py >= 60);
 
     reg [5:0] rgb;                      // {r[1:0], g[1:0], b[1:0]}
@@ -54,7 +54,7 @@ module render #(
             rgb = won ? 6'b00_01_00 : lost ? 6'b01_00_00 : 6'b00_00_00;
         else if (is_player && thick_border)
             rgb = 6'b11_11_11;
-        else if (thin_border)
+        else if (thick_border)
             rgb = 6'b00_00_00;
         else if (!show)
             rgb = 6'b10_10_10;          // hidden cell
@@ -66,11 +66,7 @@ module render #(
                 4'd1:    rgb = 6'b00_01_11; //blue
                 4'd2:    rgb = 6'b00_11_00; //green
                 4'd3:    rgb = 6'b11_00_00; //red
-                // 4'd4:    rgb = 6'b01_00_11; //purple
-                // 4'd5:    rgb = 6'b01_11_11; //cyan
-                // 4'd6:    rgb = 6'b11_11_01; //yellow
-                // 4'd7:    rgb = 6'b11_10_00; //orange
-                default: rgb = 6'b11_10_01; //dark blue
+                default: rgb = 6'b10_01_10; //purple
             endcase
         end
     end

@@ -11,14 +11,11 @@ Play the game on https://vga-playground.com/?repo=https://github.com/Edgarol99/m
 Move the player with the arrows of the pad, 
 press A to reveal the cell,
 each tile color indicates how many mines are around
-gray    -> 0
-blue    -> 1
-green   -> 2
-red     -> 3
-purple  -> 4
-cyan    -> 5
-yellow  -> 6
-orange  -> 7
+gray        -> 0
+blue        -> 1
+green       -> 2
+red         -> 3
+purple      -> 4+
 
 If you press a mine you LOSE!!.. 
 ..an you can continue playing pressing A again

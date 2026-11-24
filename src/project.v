@@ -90,9 +90,10 @@ module tt_um_minesweeperUABC (
         .b(B)
     );
 
+    musica_buscaminas#(25175000) music(clk,lost,uio_out[7]);
     // Unused outputs assigned to 0.
-    assign uio_out = 0;
-    assign uio_oe  = 0;
+    assign uio_out[6:0] = 0;
+    assign uio_oe  = 8'b10000000;
 
     // Suppress unused signals warning
     wire _unused_ok = &{ena, ui_in[7], ui_in[3:0], uio_in};
